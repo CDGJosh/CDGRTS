@@ -25,7 +25,6 @@ public class Main {
 		Display.destroy();
 	}
 
-	@SuppressWarnings("unused")
 	private void initDisplay(boolean fullscreen)
 	{
 		System.out.println("initializing display");
