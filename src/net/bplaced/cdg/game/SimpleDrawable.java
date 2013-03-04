@@ -37,6 +37,7 @@ public class SimpleDrawable implements IDrawable2D {
 		FloatBuffer f = BufferUtils.createFloatBuffer(points.length);
 		f.put(points);
 		f.flip();
+		
 		glBufferData(GL_ARRAY_BUFFER, f, GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, 0);
 	}
