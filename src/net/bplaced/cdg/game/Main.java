@@ -33,22 +33,22 @@ import static org.lwjgl.opengl.GL30.*;
 public class Main {
 	
 	// Setup variables
-		private final String WINDOW_TITLE = "The Quad: Textured";
-		private final int WIDTH = 320;
-		private final int HEIGHT = 320;
-		private final String LOCATION = "";
-		// Quad variables
-		private int vaoId = 0;
-		private int vboId = 0;
-		private int vboiId = 0;
-		private int indicesCount = 0;
-		// Shader variables
-		private int vsId = 0;
-		private int fsId = 0;
-		private int pId = 0;
-		// Texture variables
-		private int[] texIds = new int[] {0, 0};
-		private int textureSelector = 0;
+	private final String WINDOW_TITLE = "The Quad: Textured";
+	private final int WIDTH = 320;
+	private final int HEIGHT = 320;
+	private final String LOCATION = "";
+	// Quad variables
+	private int vaoId = 0;
+	private int vboId = 0;
+	private int vboiId = 0;
+	private int indicesCount = 0;
+	// Shader variables
+	private int vsId = 0;
+	private int fsId = 0;
+	private int pId = 0;
+	// Texture variables
+	private int[] texIds = new int[] {0, 0};
+	private int textureSelector = 0;
 
 	public static void main(String[] args) 
 	{
