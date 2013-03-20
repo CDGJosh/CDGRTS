@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import net.bplaced.cdg.game.interfaces.IDrawable2D;
 
@@ -69,10 +70,13 @@ public class SimpleDrawable implements IDrawable2D {
 		glBindBuffer(GL_ARRAY_BUFFER, id);
 		
 		glDrawArrays(drawMode, 0, 3);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
 		 
-		System.out.println(id+" ("+points[0]+"/"+points[1]+"/"+points[2]+")"+" "+
-		"("+points[3]+"/"+points[4]+"/"+points[5]+")"+" "+
-		"("+points[6]+"/"+points[7]+"/"+points[8]+")");
+		//System.out.println(id+" ("+points[0]+"/"+points[1]+"/"+points[2]+")"+" "+
+		//"("+points[3]+"/"+points[4]+"/"+points[5]+")"+" "+
+		//"("+points[6]+"/"+points[7]+"/"+points[8]+")");
 	}
 
 }
