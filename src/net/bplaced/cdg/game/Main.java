@@ -11,6 +11,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -49,6 +50,8 @@ public class Main {
 	// Texture variables
 	private int[] texIds = new int[] {0, 0};
 	private int textureSelector = 0;
+	private SimpleDrawable d;
+	private SimpleDrawable d2;
 
 	public static void main(String[] args) 
 	{
@@ -124,6 +127,20 @@ public class Main {
 		TexturedVertex v3 = new TexturedVertex(); 
 		v3.setXYZ(0.5f, 0.5f, 0); v3.setRGB(1, 1, 1); v3.setST(1, 0);
 		
+		d = new SimpleDrawable(0, 0, new TexturedVertex[] {v0, v1, v2, v3}, new byte[]{0, 1, 2, 2, 3, 0}, GL11.GL_TRIANGLES);                  
+		
+		
+		TexturedVertex v4 = new TexturedVertex(); 
+		v4.setXYZ(0.5f, -0.5f, 0); v0.setRGB(1, 0, 0); v0.setST(0, 0);
+		TexturedVertex v5 = new TexturedVertex(); 
+		v5.setXYZ(0.5f, -1f, 0); v1.setRGB(0, 1, 0); v1.setST(0, 1);
+		TexturedVertex v6 = new TexturedVertex(); 
+		v6.setXYZ(1f, -1f, 0); v2.setRGB(0, 0, 1); v2.setST(1, 1);
+		TexturedVertex v7 = new TexturedVertex(); 
+		v7.setXYZ(1f, -0.5f, 0); v3.setRGB(1, 1, 1); v3.setST(1, 0);
+		
+		d2 = new SimpleDrawable(0, 0, new TexturedVertex[] {v4, v5, v6, v7}, new byte[]{0, 1, 2, 2, 3, 0}, GL11.GL_TRIANGLES);
+		/*
 		TexturedVertex[] vertices = new TexturedVertex[] {v0, v1, v2, v3};
 		// Put each 'Vertex' in one FloatBuffer
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length *
@@ -172,8 +189,20 @@ public class Main {
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboiId);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+		*/
 		
 		this.exitOnGLError("setupQuad");
+	}
+	private void processHits()
+	{
+		ByteBuffer pixel = ByteBuffer.allocateDirect(4);
+		GL11.glReadPixels(Mouse.getX(), Mouse.getY(), 1, 1, GL11.GL_RGBA, GL11.GL_BYTE, pixel);
+		float r = (float)pixel.get(0);
+		if(r == 127.0f)
+			d2.setColor(1.0f, 0.0f, 0.0f);
+		else
+			d2.setColor(1.0f, 1.0f, 1.0f);
+		
 	}
 	
 	private void setupShaders() {		
@@ -202,6 +231,7 @@ public class Main {
 	
 	private void loopCycle() {
 		// Logic
+		processHits();
 		while(Keyboard.next()) {
 			// Only listen to events where the key was pressed (down event)
 			if (!Keyboard.getEventKeyState()) continue;
@@ -224,8 +254,12 @@ public class Main {
 		
 		// Bind the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texIds[textureSelector]);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 1);
 		
+		d.draw();		
+		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, 2);
+		d2.draw();
+		/*
 		// Bind to the VAO that has all the information about the vertices
 		GL30.glBindVertexArray(vaoId);
 		GL20.glEnableVertexAttribArray(0);
@@ -244,6 +278,7 @@ public class Main {
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
+		*/
 		
 		GL20.glUseProgram(0);
 		
