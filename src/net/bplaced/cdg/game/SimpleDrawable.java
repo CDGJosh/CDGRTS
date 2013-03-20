@@ -18,11 +18,11 @@ public class SimpleDrawable implements IDrawable2D {
 
 	private float x;
 	private float y;
-	private float[] points;
+	private TexturedVertex[] points;
 	private int drawMode;
 	private int id;
 	
-	public SimpleDrawable(float x, float y, float[] points, int drawMode)
+	public SimpleDrawable(float x, float y, TexturedVertex[] points, int drawMode)
 	{
 		this.x = x;
 		this.y = y;
@@ -35,8 +35,11 @@ public class SimpleDrawable implements IDrawable2D {
 				"("+points[6]+"/"+points[7]+"/"+points[8]+")");
 		
 		glBindBuffer(GL_ARRAY_BUFFER, id);
-		FloatBuffer f = BufferUtils.createFloatBuffer(points.length);
-		f.put(points);
+		FloatBuffer f = BufferUtils.createFloatBuffer(points.length * TexturedVertex.elementCount);
+		for (int i = 0; i < points.length; i++) {
+			// Add position, color and texture floats to the buffer
+			f.put(points[i].getElements());
+		}
 		f.flip();
 		
 		glBufferData(GL_ARRAY_BUFFER, f, GL_STATIC_DRAW);
