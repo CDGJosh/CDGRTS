@@ -108,7 +108,7 @@ public class Main {
 		}
 		
 		// Setup an XNA like background color
-		GL11.glClearColor(0.4f, 0.6f, 0.9f, 0f);
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		
 		// Map the internal OpenGL coordinate system to the entire screen
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
@@ -119,11 +119,11 @@ public class Main {
 	private void setupQuad() {
 		// We'll define our quad using 4 vertices of the custom 'TexturedVertex' class
 		TexturedVertex v0 = new TexturedVertex(); 
-		v0.setXYZ(-0.5f, 0.5f, 0); v0.setRGB(1, 0, 0); v0.setST(0, 0);
+		v0.setXYZ(-0.5f, 0.5f, 0); v0.setRGB(1, 1, 1); v0.setST(0, 0);
 		TexturedVertex v1 = new TexturedVertex(); 
-		v1.setXYZ(-0.5f, -0.5f, 0); v1.setRGB(0, 1, 0); v1.setST(0, 1);
+		v1.setXYZ(-0.5f, -0.5f, 0); v1.setRGB(1, 1, 1); v1.setST(0, 1);
 		TexturedVertex v2 = new TexturedVertex(); 
-		v2.setXYZ(0.5f, -0.5f, 0); v2.setRGB(0, 0, 1); v2.setST(1, 1);
+		v2.setXYZ(0.5f, -0.5f, 0); v2.setRGB(1, 1, 1); v2.setST(1, 1);
 		TexturedVertex v3 = new TexturedVertex(); 
 		v3.setXYZ(0.5f, 0.5f, 0); v3.setRGB(1, 1, 1); v3.setST(1, 0);
 		
@@ -199,10 +199,17 @@ public class Main {
 		GL11.glReadPixels(Mouse.getX(), Mouse.getY(), 1, 1, GL11.GL_RGBA, GL11.GL_BYTE, pixel);
 		float r = (float)pixel.get(0);
 		if(r == 127.0f)
-			d2.setColor(1.0f, 0.0f, 0.0f);
+		{
+			if(Mouse.isButtonDown(0))
+				d2.setColor(0.0f, 1.0f, 0.0f);
+			else
+				d2.setColor(1.0f, 0.0f, 0.0f);
+		}
 		else
 			d2.setColor(1.0f, 1.0f, 1.0f);
 		
+		if(!Mouse.isInsideWindow())
+			d2.setColor(1.0f, 1.0f, 1.0f);
 	}
 	
 	private void setupShaders() {		
