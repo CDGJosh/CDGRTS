@@ -139,10 +139,6 @@ public class SimpleDrawable implements IDrawable2D {
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
-		 
-		//System.out.println(id+" ("+points[0]+"/"+points[1]+"/"+points[2]+")"+" "+
-		//"("+points[3]+"/"+points[4]+"/"+points[5]+")"+" "+
-		//"("+points[6]+"/"+points[7]+"/"+points[8]+")");
 	}
 
 }
