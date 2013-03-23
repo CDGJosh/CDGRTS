@@ -52,7 +52,7 @@ public class Main {
 	private int textureSelector = 0;
 	private SimpleDrawable d;
 	private SimpleDrawable d2;
-
+	private int sdid = 6661337;
 	public static void main(String[] args) 
 	{
 		new Main();
@@ -121,25 +121,28 @@ public class Main {
 		TexturedVertex v0 = new TexturedVertex(); 
 		v0.setXYZ(-0.5f, 0.5f, 0); v0.setRGB(1, 1, 1); v0.setST(0, 0);
 		TexturedVertex v1 = new TexturedVertex(); 
-		v1.setXYZ(-0.5f, -0.5f, 0); v1.setRGB(1, 1, 1); v1.setST(0, 1);
+		v1.setXYZ(-0.5f, -0.5f, 0); v1.setRGB(1, 1, 1); v1.setST(0, 0.1f);
 		TexturedVertex v2 = new TexturedVertex(); 
-		v2.setXYZ(0.5f, -0.5f, 0); v2.setRGB(1, 1, 1); v2.setST(1, 1);
+		v2.setXYZ(0.5f, -0.5f, 0); v2.setRGB(1, 1, 1); v2.setST(0.1f, 0.1f);
 		TexturedVertex v3 = new TexturedVertex(); 
-		v3.setXYZ(0.5f, 0.5f, 0); v3.setRGB(1, 1, 1); v3.setST(1, 0);
+		v3.setXYZ(0.5f, 0.5f, 0); v3.setRGB(1, 1, 1); v3.setST(0.1f, 0);
 		
 		d = new SimpleDrawable(0, 0, new TexturedVertex[] {v0, v1, v2, v3}, new byte[]{0, 1, 2, 2, 3, 0}, GL11.GL_TRIANGLES);                  
 		
 		
 		TexturedVertex v4 = new TexturedVertex(); 
-		v4.setXYZ(0.5f, -0.5f, 0); v0.setRGB(1, 0, 0); v0.setST(0, 0);
+		v4.setXYZ(0.5f, -0.5f, 0); v4.setRGB(1, 0, 0); v0.setST(0, 0);
 		TexturedVertex v5 = new TexturedVertex(); 
-		v5.setXYZ(0.5f, -1f, 0); v1.setRGB(0, 1, 0); v1.setST(0, 1);
+		v5.setXYZ(0.5f, -1f, 0); v5.setRGB(1, 0, 0); v1.setST(0, 1);
 		TexturedVertex v6 = new TexturedVertex(); 
-		v6.setXYZ(1f, -1f, 0); v2.setRGB(0, 0, 1); v2.setST(1, 1);
+		v6.setXYZ(1f, -1f, 0); v6.setRGB(1, 0, 0); v2.setST(1, 1);
 		TexturedVertex v7 = new TexturedVertex(); 
-		v7.setXYZ(1f, -0.5f, 0); v3.setRGB(1, 1, 1); v3.setST(1, 0);
+		v7.setXYZ(1f, -0.5f, 0); v7.setRGB(1, 0, 0); v3.setST(1, 0);
 		
 		d2 = new SimpleDrawable(0, 0, new TexturedVertex[] {v4, v5, v6, v7}, new byte[]{0, 1, 2, 2, 3, 0}, GL11.GL_TRIANGLES);
+		float[] f = Utility.idToGlColor(sdid, false);
+		
+		d2.setColor(f[0], f[1], f[2]);
 		/*
 		TexturedVertex[] vertices = new TexturedVertex[] {v0, v1, v2, v3};
 		// Put each 'Vertex' in one FloatBuffer
@@ -195,21 +198,27 @@ public class Main {
 	}
 	private void processHits()
 	{
-		ByteBuffer pixel = ByteBuffer.allocateDirect(4);
-		GL11.glReadPixels(Mouse.getX(), Mouse.getY(), 1, 1, GL11.GL_RGBA, GL11.GL_BYTE, pixel);
-		float r = (float)pixel.get(0);
-		if(r == 127.0f)
+		ByteBuffer pixel = ByteBuffer.allocateDirect(16);
+		GL11.glReadPixels(Mouse.getX(), Mouse.getY(), 1, 1, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixel);
+		int gotId = Utility.glColorToId(new byte[]{pixel.get(0),pixel.get(1),pixel.get(2),pixel.get(3)}, false);
+		d2.setColor(pixel.get(0),pixel.get(1),pixel.get(2));
+		
+		if(gotId == sdid)
 		{
 			if(Mouse.isButtonDown(0))
 				d2.setColor(0.0f, 1.0f, 0.0f);
 			else
-				d2.setColor(1.0f, 0.0f, 0.0f);
+				d2.setColor(0.0f, 0.0f, 1.0f);
 		}
 		else
-			d2.setColor(1.0f, 1.0f, 1.0f);
+		{
+			float[] f = Utility.idToGlColor(sdid, false);
+			d2.setColor(f[0], f[1], f[2]);
+		}
 		
 		if(!Mouse.isInsideWindow())
 			d2.setColor(1.0f, 1.0f, 1.0f);
+			
 	}
 	
 	private void setupShaders() {		
